@@ -20,8 +20,7 @@ function widget_twitterCurl_init(){
 	$call = "widget_twitterCurl";
 	$ctrl = "widget_twitterCurl_ctrl";
 
-	if ( !function_exists('register_sidebar_widget') )
-		return;
+	if ( !function_exists('register_sidebar_widget') ) return;
 
 	function widget_twitterCurl($args){
 		//Twitter Base URL
@@ -33,7 +32,7 @@ function widget_twitterCurl_init(){
 		// These are our own options
 		extract($opt = get_option('widget_twitterCurl'));
 		foreach(array("home", "title") as $v) unset($opt[$v]);
-//		if(!$home || is_home()){
+		if(!$home || is_home()){
 			//String for formatting. %1 = after title, %2 = feed			
 			$widgetFmt = "$before_widget$before_title$title".' %1$s'."$after_title<ul>".'%2$s'."</ul>$after_widget";
 			$itemFmt = '<li><p>%1$s<br /><br /><a href="%2$s">%3$s</a></p></li>';
@@ -59,8 +58,7 @@ function widget_twitterCurl_init(){
 					widget_curl_twitter_relativeTime($v['created_at'])
 				);
 			printf($widgetFmt, $screen_name_link, implode("",$items));			
-//		}
-
+		}
 	}
 	function widget_twitterCurl_ctrl(){
 			// Get options
@@ -75,7 +73,7 @@ function widget_twitterCurl_init(){
 				'home' =>'1'
 			);
         	// form posted?
-		if ( $_POST['twitter-submit'] ) {
+		if ( $_POST['$o-submit'] ) {
 			foreach($opt as $k => $v)
 				$opt[$k] = strip_tags(stripslashes($_POST[$k]));
 			update_option($o, $opt);
@@ -95,7 +93,7 @@ function widget_twitterCurl_init(){
 				printf($txt, $k, $label.":", $v);
 		}
 		//Hidden
-		echo '<p><input type="hidden" id="submit" name="twitter-submit" value="1" /></p>';
+		echo '<p><input type="hidden" id="$o-submit" name="$o-submit" value="1" /></p>';
 	}
 	function widget_twitterCurl_data($args){
 	//Get the data as json
@@ -110,16 +108,12 @@ function widget_twitterCurl_init(){
 			?false
 			:json_decode($data, true);
 	}
-	function widget_twitterCurl_linkify($ret) {
-		//If no protocol, add http before linking. Starts at space, break or return, then looks for url.xx[x[x]]+ till space
-		$ret = preg_replace("#[\s\n\r]([\w]+\.[\w{2-4}]+[\w\/]+)#", " http://$1",$ret);
-		//Link it
-		$ret = preg_replace("#((https?|s?ftp|ssh)\:\/\/([\w\/\.]+))#", "<a href='$1' target='_test'>$3</a>", $ret);
-		//Link @
-		$ret = preg_replace("/@(\w+)/", "<a href='http://www.twitter.com/$1\' target='_blank'>$1</a>", $ret);
-		//Link #
-		$ret = preg_replace("/#(\w+)/", "<a href='http://search.twitter.com/search?q=$1' target='_blank'>#$1</a>", $ret);
-		return $ret;
+	function widget_twitterCurl_linkify($data) {
+		return preg_replace("/#(\w+)/", "<a href='http://search.twitter.com/search?q=$1' target='_blank'>#$1</a>",
+			preg_replace("/@(\w+)/", "<a href='http://www.twitter.com/$1\' target='_blank'>$1</a>",
+			preg_replace("#((https?|s?ftp|ssh)\:\/\/([\w\/\.]+))#", "<a href='$1' target='_test'>$3</a>",
+			preg_replace("#[\s\n\r]([\w]+\.[\w{2-4}]+[\w\/]+)#", " http://$1",
+			$data))));
 	}
 	function widget_curl_twitter_relativeTime($time, $suf = " ago") {
 		$t = new DateTime();
@@ -135,6 +129,4 @@ function widget_twitterCurl_init(){
 
 // Run code and init
 add_action('widgets_init', 'widget_twitterCurl_init');
-
-
 ?>
