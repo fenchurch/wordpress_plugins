@@ -1,64 +1,68 @@
-#relative_nav ul, 
-#relative_nav li{
-	list-style:none;
-	padding:0;
+/*Reset all*/
+#relative_nav, #relative_nav *{
 	margin:0;
-}
-#relative_nav div{
-	display:inline-block;
-	padding:5px;
-}
-#relative_nav ul{
-	clear:both;
-	display:none;
+	padding:0;
+	list-style:none;
+	position:relative;
 }
 
-#relative_nav>ul{
-	display:block;
-}
-#relative_nav li{
-	clear:both;
-	position:relative;
-	display:block;
-	padding-left:0;
-}
-#relative_nav li li{
-	padding-left:5px;
-}
-#relative_nav li div{
-	position:absolute;
-	top:0;
-	left:-20px;
-	cursor:pointer;
-}
 #relative_nav a{
-	padding:5px 0;
-	display:block;
-	margin:0;
-}
-#relative_nav a a{
-	margin-left:5px;
-}
-#relative_nav {
-	position:relative;
-}
-#relative_nav .widget-title>*{
 	display:inline-block;
-	float:left;
+	margin:5px 0;
 }
-#relative_nav .widget-title:hover>.rents{
-	display:block;
-	background:#FFF;
-}
+
+/* Parents */
 #relative_nav .rents{
+	font-weight:bold;
+}
+#relative_nav .rents,
+#relative_nav .rents *{
+	display:inline-block;
+}
+#relative_nav .rents div{
+	background:#FFF;
+	padding:0 5px;
+
+	display:none;
+	position:absolute;
+	z-index:1;
+	width:auto;
+	white-space:nowrap;	
+}
+#relative_nav .rents li{
+	display:inline;
+}
+#relative_nav .rents li::before{
+	content:"<";
+	padding-right:5px;
+}
+#relative_nav .rents:hover div{
+	display:block;
+}
+
+/* Kids */
+#relative_nav .kids{
+}
+#relative_nav .kids li li{
+	margin-left:1em;
+}
+
+#relative_nav .kids li{
+	display:block;
+}
+#relative_nav .kids li>ul{
+	display:none;
+}
+/* Expander */
+#relative_nav .expander{
 	position:absolute;
 	top:0;
-	right:0;
+	left:-2em;
+	padding:0 5px;
 }
-#relative_nav .widget-title a{
-	display:inline-block;
-}
-#relative_nav .rents a::before{
+/* Selected */
+#relative_nav .sel a::before{
 	content:">";
+	margin-left:-1em;
 	padding-right:5px;
 }
