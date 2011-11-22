@@ -6,9 +6,11 @@
 	position:relative;
 }
 
-#relative_nav a{
+#relative_nav a,
+#relative_nav div.expander{
 	display:inline-block;
 	margin:5px 0;
+	cursor:pointer;
 }
 
 /* Parents */
@@ -37,7 +39,7 @@
 	padding-right:5px;
 }
 #relative_nav .rents:hover div{
-	display:block;
+	display:inline-block;
 }
 
 /* Kids */
@@ -55,10 +57,14 @@
 }
 /* Expander */
 #relative_nav .expander{
+	content:"+";
 	position:absolute;
 	top:0;
 	left:-2em;
 	padding:0 5px;
+}
+#relative_nav .expander:hover{
+	text-shadow:1px 1px 1px rgba(0,0,0,.5);
 }
 /* Selected */
 #relative_nav .sel a::before{

@@ -35,7 +35,7 @@ function widget_twitterCurl_init(){
 		if(!$home || is_home()){
 			//String for formatting. %1 = after title, %2 = feed			
 			$widgetFmt = "$before_widget$before_title$title".' %1$s'."$after_title<ul>".'%2$s'."</ul>$after_widget";
-			$itemFmt = '<li><p>%1$s<br /><br /><a href="%2$s">%3$s</a></p></li>';
+			$itemFmt = '<li><p>%1$s<br /><a href="%2$s">%3$s</a></p></li>';
 			
 			//If no screenName, error out				
 			if(!$screen_name){
@@ -116,12 +116,19 @@ function widget_twitterCurl_init(){
 			$data))));
 	}
 	function widget_curl_twitter_relativeTime($time, $suf = " ago") {
-		$t = new DateTime();
-		$d = $t->diff(new DateTime($time));
-		$l = array("y"=>"year", "m"=>"month", "d"=>"day", "h"=>"hour", "i"=>"minute", "s"=>"second");
-		foreach((array)$d as $k => $v)
-			if($v > 0)
-				return $v." ".$l[$k].($v>1?"s":"").$suf;
+		$t0 = date_parse($time);
+		$t1 = date_parse(date("Y-m-d H:i:s"));
+		$r = "";
+		foreach(array("year", "month", "day", "hour", "minute", "second") as $k){
+			if($t0[$k] != $t1[$k]){
+				$c = $t1[$k] - $t0[$k];
+				$r = $c.($c==1 ? " $k": " {$k}s").$suf;
+				break;
+			}
+		}
+		if($r)	return $r;
+		else	return "just now";
+
 	}
 	wp_register_sidebar_widget( $id, $label, $call, array('description'=>$desc));
 	wp_register_widget_control( $id, $label, $ctrl, array('description'=>$desc));

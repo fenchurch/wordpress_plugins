@@ -27,8 +27,7 @@ function widget_relative_nav_init(){
 		extract($args);
 		//Widget options from control
 		extract($opt = get_option('relative_nav'));
-		//
-		$widgetFmt = $before_widget."\n".$before_title."\n".$title."\n".$after_title."\n".
+		$widgetFmt = "\n".$before_widget."\n".$before_title."\n".$title."\n".$after_title."\n".
 			'<div class="rents">%1$s</div>'."\n".
 			'<div class="kids">%2$s</div>'."\n".
 			"\n".$after_widget;
@@ -105,7 +104,7 @@ function widget_relative_nav_init(){
 	function widget_relative_nav_data($id, $type=null, $oid=null, $firstRun = true, $r=""){
 		if(!$oid) $oid = $id;
 		$expander = ($firstRun?"":"<div class='expander'>+</div>");
-		$data = get_children(array("post_parent"=>$id, "post_type"=>$type, 'order'=> 'ASC'));
+		$data = get_children(array("post_parent"=>$id, "post_type"=>$type, 'order'=> 'ASC', "orderby" => "menu_order"));
 		if($data){
 			$d = "";
 			foreach($data as $k => $v)
